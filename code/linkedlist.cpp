@@ -10,7 +10,6 @@ struct Node
     Node* _next;
 };
 
-
 class Clink
 {
 public:
@@ -19,7 +18,15 @@ public:
     }
 
     ~Clink(){
+        Node* p = _head;
+        
+        while(p != nullptr){
+            _head = _head->_next;
+            delete p;
+            p = _head;
+        }
 
+        _head = nullptr;
     }
 
     void InsertTail(int val){
@@ -62,6 +69,23 @@ public:
             }
         }
     }
+
+    void RemoveAll(int val){
+        Node* p = _head;
+        Node* q = _head->_next;
+
+        while(q != nullptr){
+            if(q->_data == val){
+                p->_next = q->_next;
+                delete q;
+                q = p->_next;
+            }
+            else{
+                p = q;
+                q = q->_next;
+            }
+        }
+    }
     
     void Show(){
         Node* p = _head->_next;
@@ -84,8 +108,9 @@ int main() {
         cl.InsertHead(val);
     }
     cl.InsertHead(10);
+    cl.InsertHead(10);
     cl.Show();
-    cl.Remove(10);
+    cl.RemoveAll(10);
     cl.Show();
 
     return 0;
