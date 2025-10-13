@@ -8,9 +8,9 @@ using namespace std;
 
 struct Node
 {
-    Node(int data = 0) : data_(data), next_(nullptr) {}
-    int data_;
-    Node* next_;
+    Node(int data = 0) : _data(data), _next(nullptr) {}
+    int _data;
+    Node* _next;
 };
 
 // 约瑟夫环问题 - 不带头结点的单项循环链表应用
@@ -20,16 +20,16 @@ void Joseph(Node* head, int k, int m)
     Node* q = head;
 
     // q指向最后一个
-    while (q->next_ != head)
+    while (q->_next != head)
     {
-        q = q->next_;
+        q = q->_next;
     }
 
     // 从第k个人开始报数的
     for (int i = 1; i < k; i++)
     {
         q = p;
-        p = p->next_;
+        p = p->_next;
     }
 
     // p -> 第k个人
@@ -38,12 +38,12 @@ void Joseph(Node* head, int k, int m)
         for (int i = 1; i < m; i++)
         {
             q = p;
-            p = p->next_;
+            p = p->_next;
         }
 
         // 删除p指向的结点
         // q p node
-        cout << p->data_ << " ";
+        cout << p->_data << " ";
 
         if (p == q)
         {
@@ -51,9 +51,9 @@ void Joseph(Node* head, int k, int m)
             break;
         }
 
-        q->next_ = p->next_;
+        q->_next = p->_next;
         delete p;
-        p = q->next_;
+        p = q->_next;
     }
 }
 
@@ -68,14 +68,14 @@ int main()
     Node* n7 = new Node(7);
     Node* n8 = new Node(8);
 
-    head->next_ = n2;
-    n2->next_ = n3;
-    n3->next_ = n4;
-    n4->next_ = n5;
-    n5->next_ = n6;
-    n6->next_ = n7;
-    n7->next_ = n8;
-    n8->next_ = head;
+    head->_next = n2;
+    n2->_next = n3;
+    n3->_next = n4;
+    n4->_next = n5;
+    n5->_next = n6;
+    n6->_next = n7;
+    n7->_next = n8;
+    n8->_next = head;
 
     Joseph(head, 1, 5);
 }

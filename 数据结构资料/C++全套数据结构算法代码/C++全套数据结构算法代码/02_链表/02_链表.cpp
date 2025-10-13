@@ -9,9 +9,9 @@ using namespace std;
 // 节点类型
 struct Node
 {
-    Node(int data = 0) :data_(data), next_(nullptr) {}
-    int data_;
-    Node* next_;
+    Node(int data = 0) :_data(data), _next(nullptr) {}
+    int _data;
+    Node* _next;
 };
 
 // 单链表代码实现
@@ -21,19 +21,19 @@ public:
     Clink()
     {
         // 给head_初始化指向头节点
-        head_ = new Node();
+        _head = new Node();
     }
     ~Clink()
     {
         // 节点的释放
-        Node* p = head_;
+        Node* p = _head;
         while (p != nullptr)
         {
-            head_ = head_->next_;
+            _head = _head->_next;
             delete p;
-            p = head_;
+            p = _head;
         }
-        head_ = nullptr;
+        _head = nullptr;
     }
 
 public:
@@ -41,81 +41,81 @@ public:
     void InsertTail(int val)
     {
         // 先找到当前链表的末尾节点
-        Node* p = head_;
-        while (p->next_ != nullptr)
+        Node* p = _head;
+        while (p->_next != nullptr)
         {
-            p = p->next_;
+            p = p->_next;
         }
 
         // 生成新节点
         Node* node = new Node(val);
         // 把新节点挂在尾节点的后面
-        p->next_ = node;
+        p->_next = node;
     }
     // 链表的头插法  O(1)
     void InsertHead(int val)
     {
         Node* node = new Node(val);
-        node->next_ = head_->next_;
-        head_->next_ = node;
+        node->_next = _head->_next;
+        _head->_next = node;
     }
     // 链表节点的删除
     void Remove(int val)
     {
-        Node* q = head_;
-        Node* p = head_->next_;
+        Node* q = _head;
+        Node* p = _head->_next;
 
         while (p != nullptr)
         {
-            if (p->data_ == val)
+            if (p->_data == val)
             {
                 // 删除一个节点本身的操作是O(1)
-                q->next_ = p->next_;
+                q->_next = p->_next;
                 delete p;
                 return;
             }
             else
             {
                 q = p;
-                p = p->next_;
+                p = p->_next;
             }
         }
     }
     // 删除多个节点
     void RemoveAll(int val)
     {
-        Node* q = head_;
-        Node* p = head_->next_;
+        Node* q = _head;
+        Node* p = _head->_next;
 
         while (p != nullptr)
         {
-            if (p->data_ == val)
+            if (p->_data == val)
             {
-                q->next_ = p->next_;
+                q->_next = p->_next;
                 delete p;
                 // 对指针p进行重置
-                p = q->next_;
+                p = q->_next;
             }
             else
             {
                 q = p;
-                p = p->next_;
+                p = p->_next;
             }
         }
     }
     // 搜索 list O(n) 数组的搜索  下表访问/随机访问arr[i]O(1)  搜索O(n)
     bool Find(int val)
     {
-        Node* p = head_->next_;
+        Node* p = _head->_next;
         while (p != nullptr)
         {
-            if (p->data_ == val)
+            if (p->_data == val)
             {
                 return true;
             }
             else
             {
-                p = p->next_;
+                p = p->_next;
             }
         }
         return false;
@@ -123,16 +123,16 @@ public:
     // 链表打印
     void Show()
     {
-        Node* p = head_->next_;
+        Node* p = _head->_next;
         while (p != nullptr)
         {
-            cout << p->data_ << " ";
-            p = p->next_;
+            cout << p->_data << " ";
+            p = p->_next;
         }
         cout << endl;
     }
 private:
-    Node* head_; // 指向链表的头节点
+    Node* _head; // 指向链表的头节点
 
     friend void ReverseLink(Clink& link);
     friend bool GetLaskKNode(Clink& link, int k, int& val);
@@ -142,22 +142,22 @@ private:
 // 单链表逆序
 void ReverseLink(Clink &link)
 {
-    Node* head = link.head_;
-    Node* p = head->next_;
+    Node* head = link._head;
+    Node* p = head->_next;
     if (p == nullptr)
     {
         return;
     }
 
-    head->next_ = nullptr;
+    head->_next = nullptr;
 
     while (p != nullptr)
     {
-        Node* q = p->next_;
+        Node* q = p->_next;
 
         // p指针指向的节点进行头插
-        p->next_ = head->next_;
-        head->next_ = p;
+        p->_next = head->_next;
+        head->_next = p;
 
         p = q;
     }
@@ -166,7 +166,7 @@ void ReverseLink(Clink &link)
 // 求倒数第k个节点的值
 bool GetLaskKNode(Clink& link, int k, int& val)
 {
-    Node* head = link.head_;
+    Node* head = link._head;
     Node* pre = head;
     Node* p = head;
 
@@ -177,7 +177,7 @@ bool GetLaskKNode(Clink& link, int k, int& val)
 
     for (int i = 0; i < k; i++)
     {
-        p = p->next_;
+        p = p->_next;
         if (p == nullptr)
         {
             return false;
@@ -187,45 +187,45 @@ bool GetLaskKNode(Clink& link, int k, int& val)
     // pre在头节点，p在正数第k个节点
     while (p != nullptr)
     {
-        pre = pre->next_;
-        p = p->next_;
+        pre = pre->_next;
+        p = p->_next;
     }
 
-    val = pre->data_;
+    val = pre->_data;
     return true;
 }
 
 // 合并两个有序的单链表
 void MergeLink(Clink& link1, Clink& link2)
 {
-    Node* p = link1.head_->next_;
-    Node* q = link2.head_->next_;
-    Node* last = link1.head_;
-    link2.head_->next_ = nullptr;
+    Node* p = link1._head->_next;
+    Node* q = link2._head->_next;
+    Node* last = link1._head;
+    link2._head->_next = nullptr;
 
     while (p != nullptr && q != nullptr)
     {
-        if (p->data_ < q->data_)
+        if (p->_data < q->_data)
         {
-            last->next_ = p;
-            p = p->next_;
-            last = last->next_;
+            last->_next = p;
+            p = p->_next;
+            last = last->_next;
         }
         else
         {
-            last->next_ = q;
-            q = q->next_;
-            last = last->next_;
+            last->_next = q;
+            q = q->_next;
+            last = last->_next;
         }
     }
 
     if (p != nullptr)
     {
-        last->next_ = p;
+        last->_next = p;
     }
     else
     {
-        last->next_ = q;
+        last->_next = q;
     }
 }
 
@@ -235,10 +235,10 @@ bool IsLinkHasCircle(Node *head, int& val)
     Node *fast = head;
     Node* slow = head;
 
-    while (fast != nullptr && fast->next_ != nullptr)
+    while (fast != nullptr && fast->_next != nullptr)
     {
-        slow = slow->next_;
-        fast = fast->next_->next_;
+        slow = slow->_next;
+        fast = fast->_next->_next;
 
         if (slow == fast)
         {
@@ -246,10 +246,10 @@ bool IsLinkHasCircle(Node *head, int& val)
             fast = head;
             while (fast != slow)
             {
-                slow = slow->next_;
-                fast = fast->next_;
+                slow = slow->_next;
+                fast = fast->_next;
             }
-            val = slow->data_;
+            val = slow->_data;
             return true;
         }
     }
@@ -260,19 +260,19 @@ bool IsLinkHasCircle(Node *head, int& val)
 bool IsLinkHasMerge(Node* head1, Node* head2, int& val)
 {
     int cnt1 = 0, cnt2 = 0;
-    Node* p = head1->next_;
-    Node* q = head2->next_;
+    Node* p = head1->_next;
+    Node* q = head2->_next;
 
     while (p != nullptr)
     {
         cnt1++;
-        p = p->next_;
+        p = p->_next;
     }
 
     while (q != nullptr)
     {
         cnt2++;
-        q = q->next_;
+        q = q->_next;
     }
 
     p = head1;
@@ -283,7 +283,7 @@ bool IsLinkHasMerge(Node* head1, Node* head2, int& val)
         int offset = cnt1 - cnt2;
         while (offset-- > 0)
         {
-            p = p->next_;
+            p = p->_next;
         }
     }
     else
@@ -292,7 +292,7 @@ bool IsLinkHasMerge(Node* head1, Node* head2, int& val)
         int offset = cnt2 - cnt1;
         while (offset-- > 0)
         {
-            q = q->next_;
+            q = q->_next;
         }
     }
 
@@ -300,11 +300,11 @@ bool IsLinkHasMerge(Node* head1, Node* head2, int& val)
     {
         if (p == q)
         {
-            val = p->data_;
+            val = p->_data;
             return true;
         }
-        p = p->next_;
-        q = q->next_;
+        p = p->_next;
+        q = q->_next;
     }
 
     return false;
@@ -314,15 +314,15 @@ int main()
 {
     Node head1;
     Node n1(25), n2(67), n3(32), n4(18);
-    head1.next_ = &n1;
-    n1.next_ = &n2;
-    n2.next_ = &n3;
-    n3.next_ = &n4;
+    head1._next = &n1;
+    n1._next = &n2;
+    n2._next = &n3;
+    n3._next = &n4;
 
     Node head2;
     Node n5(31);
-    head2.next_ = &n5;
-    n5.next_ = &n1;
+    head2._next = &n5;
+    n5._next = &n1;
 
     int val;
     if (IsLinkHasMerge(&head1, &head2, val))

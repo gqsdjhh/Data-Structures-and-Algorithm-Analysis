@@ -8,12 +8,12 @@ using namespace std;
 struct Node
 {
     Node(int data=0)
-        : data_(data)
-        , next_(nullptr)
+        : _data(data)
+        , _next(nullptr)
         , pre_(nullptr)
     {}
-    int data_;   // 数据域
-    Node* next_; // 指向下一个节点
+    int _data;   // 数据域
+    Node* _next; // 指向下一个节点
     Node* pre_;  // 指向前一个节点
 };
 
@@ -30,7 +30,7 @@ public:
         Node* p = head_;
         while (p != nullptr)
         {
-            head_ = head_->next_;
+            head_ = head_->_next;
             delete p;
             p = head_;
         }
@@ -41,43 +41,43 @@ public:
     void InsertHead(int val)
     {
         Node* node = new Node(val);
-        node->next_ = head_->next_;
+        node->_next = head_->_next;
         node->pre_ = head_;
-        if (head_->next_ != nullptr)
+        if (head_->_next != nullptr)
         {
-            head_->next_->pre_ = node;
+            head_->_next->pre_ = node;
         }
-        head_->next_ = node;
+        head_->_next = node;
     }
 
     // 尾插法
     void InsertTail(int val)
     {
         Node* p = head_;
-        while (p->next_ != nullptr)
+        while (p->_next != nullptr)
         {
-            p = p->next_;
+            p = p->_next;
         }
 
         // p->尾节点
         Node* node = new Node(val);
         node->pre_ = p;
-        p->next_ = node;
+        p->_next = node;
     }
 
     // 节点删除
     void Remove(int val)
     {
-        Node* p = head_->next_;
+        Node* p = head_->_next;
         while (p != nullptr)
         {
-            if (p->data_ == val)
+            if (p->_data == val)
             {
                 // 删除p指向的节点
-                p->pre_->next_ = p->next_;
-                if (p->next_ != nullptr)
+                p->pre_->_next = p->_next;
+                if (p->_next != nullptr)
                 {
-                    p->next_->pre_ = p->pre_;
+                    p->_next->pre_ = p->pre_;
                 }
                 //Node* next = p->next_;
                 delete p;
@@ -86,7 +86,7 @@ public:
             }
             else
             {
-                p = p->next_;
+                p = p->_next;
             }
         }
     }
@@ -94,16 +94,16 @@ public:
     // 节点搜索
     bool Find(int val)
     {
-        Node* p = head_->next_;
+        Node* p = head_->_next;
         while (p != nullptr)
         {
-            if (p->data_ == val)
+            if (p->_data == val)
             {
                 return true;
             }
             else
             {
-                p = p->next_;
+                p = p->_next;
             }
         }
         return false;
@@ -112,11 +112,11 @@ public:
     // 链表节点输出
     void Show()
     {
-        Node* p = head_->next_;
+        Node* p = head_->_next;
         while (p != nullptr)
         {
-            cout << p->data_ << " ";
-            p = p->next_;
+            cout << p->_data << " ";
+            p = p->_next;
         }
         cout << endl;
     }
