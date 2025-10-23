@@ -53,20 +53,18 @@ public:
         _head->_next = node;
     }
 
-    void Remove(int val){
+    void Remove(int val) {
         Node* p = _head;
         Node* q = _head->_next;
-        
-        while(q != nullptr){
-            if(q->_data == val){
+
+        while (q != nullptr) {
+            if (q->_data == val) {
                 p->_next = q->_next;
                 delete q;
                 return;
             }
-            else{
-                p = q;
-                q = q->_next;
-            }
+            p = q;
+            q = q->_next;
         }
     }
 
@@ -116,6 +114,7 @@ private:
 
     friend void ReverseLink(Clink &link);
     friend bool GetlastKNode(Clink &link, int k, int &value);
+    friend void MergeLink(Clink &link1, Clink &link2);
 };
 
 #if 0
@@ -207,6 +206,56 @@ int main() {
     return 0;
 }
 #endif
+
+//合并两个有序单链表
+void MergeLink(Clink &link1, Clink &link2)
+{
+    Node *p = link1._head->_next;
+    Node *q = link2._head->_next;
+    Node *last = link1._head;
+
+    while(p != nullptr && q != nullptr){
+        if(p->_data < q->_data){
+            last->_next = p;
+            p = p->_next;
+            last = last->_next;
+        }
+        else{
+            last->_next = q;
+            q = q->_next;
+            last = last->_next;
+        }
+    }
+
+    if(p != nullptr){
+        last->_next = p;
+    }
+    else if(q != nullptr){
+        last->_next = q;
+    }
+}
+
+
+int main() {
+    int arr[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    int brr[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+
+    Clink link1;
+    Clink link2;
+
+    for(int i = 0; i < 10; ++i){
+        link1.InsertTail(arr[i]);
+        link2.InsertTail(brr[i]);
+    }
+    link1.Show();
+    link2.Show();
+
+    MergeLink(link1, link2);
+    link1.Show();
+    //link2.Show();    
+
+    return 0;
+}
 
 #if 0
 int main() {
