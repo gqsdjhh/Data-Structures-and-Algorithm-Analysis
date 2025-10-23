@@ -86,6 +86,21 @@ public:
             }
         }
     }
+
+    bool Find(int val){
+        Node* p = _head->_next;
+
+        while(p != nullptr){
+            if(p->_data == val){
+                return true;
+            }
+            else{
+                p = p->_next;
+            }
+        }
+
+        return false;
+    }
     
     void Show(){
         Node* p = _head->_next;
@@ -98,8 +113,102 @@ public:
 
 private:
     Node* _head;
+
+    friend void ReverseLink(Clink &link);
+    friend bool GetlastKNode(Clink &link, int k, int &value);
 };
 
+#if 0
+//单链表逆序
+void ReverseLink(Clink &link)
+{
+    Node* head = link._head;
+    Node* p = head->_next;
+    if(p == nullptr){
+        return;
+    }
+
+    head->_next = nullptr;
+
+    while(p != nullptr){
+        Node* q = p->_next;
+
+        //头插法
+        p->_next = head->_next;
+        head->_next = p;
+        p = q;
+    }
+
+}
+
+int main() {
+    Clink link;
+    srand((unsigned int)time(nullptr));
+    for(int i = 0; i < 10; ++i){
+        int val = rand() % 100;
+        link.InsertHead(val);
+    }
+    link.Show();
+    ReverseLink(link);
+    link.Show();
+
+    return 0;
+}
+#endif
+
+#if 0
+//单链表倒数第k个节点
+bool GetlastKNode(Clink &link, int k, int &val)
+{
+    if(k <= 0){
+        return false;
+    }
+    Node* head = link._head;
+
+    Node* pre = head;
+    Node* p = head;
+
+    for(int i = 0; i < k; ++i){
+        p = p->_next;
+    
+        if(p == nullptr){
+            return false;
+        }
+    }
+
+    //pre在头节点，p在正数第k个节点
+    while(p != nullptr){
+        pre = pre->_next;
+        p = p->_next;
+    }
+
+    val = pre->_data;
+    return true;
+}
+
+
+int main() {
+    Clink link;
+    srand((unsigned int)time(nullptr));
+    for(int i = 0; i < 10; ++i){
+        int val = rand() % 100;
+        link.InsertHead(val);
+    }
+    link.Show();
+    int k = 3;
+    int value = 0;
+    if(GetlastKNode(link, k, value)){
+        cout << "The " << k << "th to last node value is: " << value << endl;
+    }
+    else{
+        cout << "No such node." << endl;
+    }
+
+    return 0;
+}
+#endif
+
+#if 0
 int main() {
     Clink cl;
     srand((unsigned int)time(nullptr));
@@ -115,3 +224,4 @@ int main() {
 
     return 0;
 }
+#endif
