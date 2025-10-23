@@ -115,6 +115,7 @@ private:
     friend void ReverseLink(Clink &link);
     friend bool GetlastKNode(Clink &link, int k, int &value);
     friend void MergeLink(Clink &link1, Clink &link2);
+    friend bool IsLinkHasCircle(Clink &link, int &val);
 };
 
 #if 0
@@ -207,6 +208,7 @@ int main() {
 }
 #endif
 
+#if 0
 //合并两个有序单链表
 void MergeLink(Clink &link1, Clink &link2)
 {
@@ -253,6 +255,55 @@ int main() {
     MergeLink(link1, link2);
     link1.Show();
     //link2.Show();    
+
+    return 0;
+}
+#endif
+
+//单链表是否有环，求环的入口
+bool IsLinkHasCircle(Node *head, int &val)
+{
+    //使用快慢指针法
+    Node* slow = head;
+    Node* fast = head;
+
+    //fast快，不用判断slow
+    while(fast != nullptr && fast->_next != nullptr){
+        slow = slow->_next;
+        fast = fast->_next->_next;
+
+        if(slow == fast){
+            //有环，求环的入口
+            slow = head;
+            while(slow != fast){
+                slow = slow->_next;
+                fast = fast->_next;
+            }
+            val = slow->_data;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int main(){
+    Node head;
+
+    Node n1(25), n2(27), n3(32), n4(18);
+    head._next = &n1;
+    n1._next = &n2;
+    n2._next = &n3;
+    n3._next = &n4;
+    n4._next = &n2;
+
+    int val;
+    if(IsLinkHasCircle(&head, val)){
+        cout << "链表有环，入口节点值为: " << val << endl;
+    }
+    else{
+        cout << "链表无环" << endl;
+    }
 
     return 0;
 }
