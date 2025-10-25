@@ -260,6 +260,7 @@ int main() {
 }
 #endif
 
+#if 0
 //单链表是否有环，求环的入口
 bool IsLinkHasCircle(Node *head, int &val)
 {
@@ -307,6 +308,74 @@ int main(){
 
     return 0;
 }
+#endif
+
+#if 0
+//判断两个单链表是否相交
+bool IsLinkHasMerge(Node *head1, Node *head2, int &val)
+{
+    int cnt1 = 0, cnt2 = 0;
+    Node* p = head1->_next;
+    Node* q = head2->_next;
+
+    while(p != nullptr){
+        cnt1++;
+        p = p->_next;
+    }
+
+    while(q != nullptr){
+        cnt2++;
+        q = q->_next;
+    }
+
+    p = head1->_next;
+    q = head2->_next;
+
+    //如果长度不相等，先走长的
+    if(cnt1 > cnt2){
+        for(int i = 0; i < cnt1 - cnt2; ++i){
+            p = p->_next;
+        }
+    }
+    else{
+        for(int i = 0; i < cnt2 - cnt1; ++i){
+            q = q->_next;
+        }
+    }
+
+    while(p != nullptr && q != nullptr){
+        if(p == q){
+            val = p->_data;
+            return true; //相交
+        }
+        p = p->_next;
+        q = q->_next;
+    }
+}
+
+
+int main(){
+    Node head1, head2;
+    Node n1(25), n2(27), n3(32), n4(18);
+    head1._next = &n1;
+    n1._next = &n2;
+    n2._next = &n3;
+    n3._next = &n4;
+    Node n5(30), n6(35);
+    head2._next = &n5;
+    n5._next = &n6;
+    n6._next = &n3; //让两个链表相交
+    int val;
+    if(IsLinkHasMerge(&head1, &head2, val)){
+        cout << "两个链表相交，交点值为: " << val << endl;
+    }
+    else{
+        cout << "两个链表不相交" << endl;
+    }
+
+    return 0;
+}
+$#endif
 
 #if 0
 int main() {
