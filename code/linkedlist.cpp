@@ -375,7 +375,7 @@ int main(){
 
     return 0;
 }
-$#endif
+#endif
 
 #if 0
 int main() {
