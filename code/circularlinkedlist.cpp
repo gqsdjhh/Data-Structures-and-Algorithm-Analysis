@@ -3,6 +3,8 @@
 
 using namespace std;
 
+#if 0
+
 //单向循环链表
 class CircleLink
 {
@@ -123,3 +125,65 @@ int main(){
 
     return 0;
 }
+
+#endif
+
+struct Node
+{
+    Node(int data = 0) : data_(data), next_(nullptr) {};
+    int data_;
+    Node* next_;
+};
+
+//约瑟夫环
+//n个人围成一圈，从第k个人开始报数，数到m的那个人出列，
+//然后从下一个人开始重新报数，数到m的那个人又出列，依此类推，直到所有人都出列为止，由此产生一个出列序列。
+void Joseph(Node* head, int k, int m){
+    Node *p = head;
+    Node *q = head;
+
+    //q指向尾节点
+    while(q->next_ != head){
+        q = q->next_;
+    }
+
+    for(int i = 1; i < k; ++i){
+        q = p;
+        p = p->next_;
+    }
+
+    while(p->next_ != p){
+        for(int i = 1; i < m; ++i){
+            q = p;
+            p = p->next_;
+        }
+
+        cout << "Removed: " << p->data_ << endl;
+
+        if(p == q){
+            delete p;
+            return;
+        }
+
+        q->next_ = p->next_;
+        delete p;
+        p = q->next_;
+    }
+}
+
+int main(){
+    Node* head = new Node(1);
+    Node* tail = head;
+
+    for(int i = 2; i <= 10; ++i){
+        Node* node = new Node(i);
+        tail->next_ = node;
+        tail = node;
+    }
+    tail->next_ = head; // 形成环
+
+    Joseph(head, 1, 3);
+
+    return 0;
+}
+
