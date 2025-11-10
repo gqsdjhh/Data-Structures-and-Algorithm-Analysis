@@ -62,6 +62,17 @@ public:
         }
     }
 
+    bool Find(int val) {
+        Node* curr = head_->next_;
+        while (curr != nullptr) {
+            if (curr->data_ == val) {
+                return true;
+            }
+            curr = curr->next_;
+        }
+        return false;
+    }
+
     void show() {
         Node* curr = head_->next_;
         while (curr != nullptr) {
@@ -84,6 +95,7 @@ int main(){
     dll.show();
     dll.Remove(20);
     dll.show();
+    cout << (dll.Find(10) ? "Found 10" : "10 Not Found") << endl;
 
     return 0;
 }
