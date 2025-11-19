@@ -1,0 +1,144 @@
+#include <iostream>
+using namespace std;
+
+// 定义双向链表的节点类型
+struct Node
+{
+    Node(int data=0)
+        : _data(data)
+        , _next(nullptr)
+        , pre_(nullptr)
+    {}
+    int _data;   // 数据域
+    Node* _next; // 指向下一个节点
+    Node* pre_;  // 指向前一个节点
+};
+
+// 双向循环链表
+class DoubleCircleLink
+{
+public:
+    DoubleCircleLink()
+    {
+        head_ = new Node();
+        head_->_next = head_;
+        head_->pre_ = head_;
+    }
+    ~DoubleCircleLink()
+    {
+        Node* p = head_->_next;
+        while (p != head_)
+        {
+            head_->_next = p->_next;
+            p->_next->pre_ = head_;
+            delete p;
+            p = head_->_next; // 让p重新指向第一个节点，进行删除
+        }
+        delete head_;
+        head_ = nullptr;
+    }
+
+public:
+    // 头插法 O(1)
+    void InsertHead(int val)
+    {
+        Node* node = new Node(val);
+        node->_next = head_->_next;
+        node->pre_ = head_;
+        head_->_next->pre_ = node;
+        head_->_next = node;
+    }
+
+    // 尾插法  O(1)
+    void InsertTail(int val)
+    {
+        Node* p = head_->pre_;
+        // p->尾节点
+        Node* node = new Node(val);
+        node->pre_ = p;
+        p->_next = node;
+        node->_next = head_;
+        head_->pre_ = node;
+    }
+
+    // 节点删除
+    void Remove(int val)
+    {
+        Node* p = head_->_next;
+        while (p != head_)
+        {
+            if (p->_data == val)
+            {
+                // 删除p指向的节点
+                p->pre_->_next = p->_next;
+                p->_next->pre_ = p->pre_;
+                delete p;
+                return;
+            }
+            else
+            {
+                p = p->_next;
+            }
+        }
+    }
+
+    // 节点搜索
+    bool Find(int val)
+    {
+        Node* p = head_->_next;
+        while (p != head_)
+        {
+            if (p->_data == val)
+            {
+                return true;
+            }
+            else
+            {
+                p = p->_next;
+            }
+        }
+        return false;
+    }
+
+    // 链表节点输出
+    void Show()
+    {
+        Node* p = head_->_next;
+        while (p != head_)
+        {
+            cout << p->_data << " ";
+            p = p->_next;
+        }
+        cout << endl;
+    }
+
+private:
+    Node* head_; // 指向头节点
+};
+
+int main()
+{
+    DoubleCircleLink dlink;
+
+    dlink.InsertHead(100);
+
+    dlink.InsertTail(20);
+    dlink.InsertTail(12);
+    dlink.InsertTail(78);
+    dlink.InsertTail(32);
+    dlink.InsertTail(7);
+    dlink.InsertTail(90);
+    dlink.Show();
+
+    dlink.InsertHead(200);
+    dlink.Show();
+
+    dlink.Remove(200);
+    dlink.Show();
+
+    dlink.Remove(90);
+    dlink.Show();
+
+    dlink.Remove(78);
+    dlink.Show();
+}
